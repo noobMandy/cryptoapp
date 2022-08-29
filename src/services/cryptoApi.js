@@ -1,0 +1,29 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+const cryptoApiHeaders = {
+  'x-rapidapi-key': 'f0021db587msh781fb1cbef39856p11c183jsn45521d5d1c85',
+  'x-rapidapi-host':'coinranking1.p.rapidapi.com',
+};
+
+const baseUrl = "https://coinranking1.p.rapidapi.com";
+const createRequest = (url) => ({ url ,headers:cryptoApiHeaders});
+export const cryptoApi = createApi({
+  reducerPath: "cryptoApi",
+  baseQuery: fetchBaseQuery({ baseUrl }),
+  endpoints: (builder) => ({
+    getCryptos: builder.query({
+      query: (count) => createRequest(`/coins?limit=${count}`),
+    }),
+    getCryptoDetails: builder.query({
+      query: (coinId) => createRequest(`/coin/${coinId}`),
+    }),
+    getCryptoHistory: builder.query({
+      query: (coinId,timePeriod) => createRequest(`/coin/${coinId}/history/timeperiod=${timePeriod}`),
+    }),
+  }),
+});
+
+export const { useGetCryptosQuery ,useGetCryptoDetailsQuery,useGetCryptoHistoryQuery} = cryptoApi;
+
+//X-CoinAPI-Key: 73034021-THIS-IS-SAMPLE-KEY
+//'X-CoinAPI-Key': '73034021-THIS-IS-SAMPLE-KEY'
